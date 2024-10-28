@@ -134,17 +134,37 @@ function flatten(dataframe) {
 
 }
 
-//csvFile = datatrafficdataset_2000.csv
+csvFile = './assets/testing/datatrafficdataset_10.csv'
+
+let ignorerows = [0]
+
+let ignorecols = [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ]
 
 function loadCSV(csvFile, ignorerows, ignorecols) {  // string, dataset, dataset
   // returns a list comprising of [dataframe, rows (integer), cols (integer)]
+  const rows = 0
+  const cols = 0
+  const newArray = []
+  const delimiter = ','
 
- 
+  const data = fs.readFileSync(csvFile, {encoding: "utf-8", flag: 'r'});
+  const lines = data.split(/\n/);
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const elements = line.split(delimiter);
+    newArray.push(elements)
+  }
+
+  rows = 
+  
+  console.log(newArray)
+
 }
+
+loadCSV(csvFile, ignorerows, ignorecols)
 
 //loadCSV(csvFile)
 
-//dataset =  [ 33, 3.4, 33.4, 55, 4, 43, 56 ] 
 
 function calculateMedian(dataset) {
 
@@ -188,19 +208,29 @@ function calculateMedian(dataset) {
 
 }
 
-//calculateMedian(dataset)
 
 function createSlice(dataframe, colindex, colpattern, exportcols = []) { // dataframe, integer, string/numeric, dataset
-  // returns a dataframe
-  
+
+const newArray = [];
+
+  for (let i = 0; i < dataframe.length; i++) {
+    if ( (colpattern === '*' && colindex < dataframe[i].length) || dataframe[i][colindex] === colpattern) { 
+      let newRow = [];
+      const colsToInclude = exportcols.length > 0 ? exportcols : dataframe[i].map((_, j) => j);
+      for (let j = 0; j < colsToInclude.length; j++) {
+        const columnIndex = colsToInclude[j];
+        if (dataframe[i][columnIndex] !== undefined) {
+          newRow.push(dataframe[i][columnIndex]);
+        }
+      }
+      newArray.push(newRow);
+    }
+  }
+
+  console.log(newArray);
+  return newArray;
+
 }
-
-
-
-
-
-
-
 
 
 module.exports = {
